@@ -71,14 +71,16 @@ namespace TicTacToe
         //* TODO:  finish all of these that return true
         private bool IsAnyRowWinner()
         {
-            int rowNum = 0;
-            while (rowNum <= 4)
+            bool winner = false;
+            for (int rowNum = 0; rowNum < SIZE; rowNum++)
             {
-                IsRowWinner(rowNum);
+                if (IsRowWinner(rowNum))
+                {
+                    winner = true;
+                }
                 rowNum++;
-
             }
-            return true;
+            return winner;
         }
 
         private bool IsColumnWinner(int col)
@@ -96,11 +98,28 @@ namespace TicTacToe
 
         private bool IsAnyColumnWinner()
         {
-            return true;
+            bool winner = false;
+            for (int colNum = 0; colNum < SIZE; colNum++)
+            {
+                if (IsColumnWinner(colNum))
+                {
+                    winner = true;
+                }
+                colNum++;
+            }
+            return winner;
         }
 
         private bool IsDiagonal1Winner()
         {
+            Label square = GetSquare(0, 0);
+            string symbol = square.Text;
+            for (int row = 1, col = 1; row < SIZE; row++, col++)
+            {
+                square = GetSquare(row, col);
+                if (symbol == EMPTY || square.Text != symbol)
+                    return false;
+            }
             return true;
         }
 
@@ -119,7 +138,14 @@ namespace TicTacToe
 
         private bool IsAnyDiagonalWinner()
         {
-            return true;
+            if(IsDiagonal1Winner() || IsDiagonal2Winner())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool IsFull()
@@ -226,6 +252,7 @@ namespace TicTacToe
             switch (winningDimension)
             {
                 case ROW:
+              
 
                     break;
                 case COLUMN:
@@ -263,8 +290,8 @@ namespace TicTacToe
             int winningDimension, winningValue;
             if (IsWinner(out winningDimension, out winningValue))
                 MessageBox.Show("Computer wins!");
-            else if (IsFull())
-                MessageBox.Show("It's a Tie!");
+           // else if (IsFull())
+             //   MessageBox.Show("It's a Tie!");
         }
 
         // Setting the enabled property changes the look and feel of the cell.

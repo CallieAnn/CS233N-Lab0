@@ -71,12 +71,27 @@ namespace TicTacToe
         //* TODO:  finish all of these that return true
         private bool IsAnyRowWinner()
         {
+            int rowNum = 0;
+            while (rowNum <= 4)
+            {
+                IsRowWinner(rowNum);
+                rowNum++;
+
+            }
             return true;
         }
 
         private bool IsColumnWinner(int col)
         {
-            return true;
+                Label square = GetSquare(col, 0);
+                string symbol = square.Text;
+                for (int row = 1; row < SIZE; row++)
+                {
+                    square = GetSquare(row, col);
+                    if (symbol == EMPTY || square.Text != symbol)
+                        return false;
+                }
+                return true;
         }
 
         private bool IsAnyColumnWinner()
@@ -302,8 +317,16 @@ namespace TicTacToe
                 clickedLabel.Text = USER_SYMBOL.ToString();
                 DisableSquare(clickedLabel);
 
-                IsWinner(out winningDimension, out winningValue);
-                MakeComputerMove();
+                if (IsWinner(out winningDimension, out winningValue))
+                {
+                    MessageBox.Show("User Wins!");
+                }
+
+                else 
+                {
+                    MakeComputerMove();
+                }
+                
             }
         }
 

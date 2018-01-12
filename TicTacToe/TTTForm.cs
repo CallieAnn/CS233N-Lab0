@@ -230,6 +230,26 @@ namespace TicTacToe
 
         private void MakeComputerMove()
         {
+            int row;
+            int column;
+            Label lab;
+
+            do
+            {
+                Random rand = new Random();
+                row = rand.Next(5);
+                column = rand.Next(5);
+                lab = GetSquare(row, column);
+            } while (lab.Text != "");
+
+            lab.Text = COMPUTER_SYMBOL.ToString();
+            DisableSquare(lab);
+
+            int winningDimension, winningValue;
+            if (IsWinner(out winningDimension, out winningValue))
+                MessageBox.Show("Computer wins!");
+            else if (IsFull())
+                MessageBox.Show("It's a Tie!");
         }
 
         // Setting the enabled property changes the look and feel of the cell.
@@ -274,15 +294,27 @@ namespace TicTacToe
             int winningValue = NONE;
 
             Label clickedLabel = (Label)sender;
+            if (clickedLabel.Text == "")
+            {
+                int row, column;
+                GetRowAndColumn(clickedLabel, out row, out column);
 
+                clickedLabel.Text = USER_SYMBOL.ToString();
+                DisableSquare(clickedLabel);
+
+                IsWinner(out winningDimension, out winningValue);
+                MakeComputerMove();
+            }
         }
 
         private void newGameButton_Click(object sender, EventArgs e)
         {
+            EnableAllSquares();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
+            this.Close();
         }
     }
 }

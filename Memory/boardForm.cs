@@ -17,7 +17,7 @@ namespace Memory
             InitializeComponent();
         }
 
-        #region Instance Variables
+        #region Instance Variables 
         const int NOT_PICKED_YET = -1;
 
         int firstCardNumber = NOT_PICKED_YET;
@@ -112,7 +112,12 @@ namespace Memory
         // shows (loads) the backs of all of the cards
         private void LoadAllCardBacks()
         {
+            int cardNum;
 
+            for(cardNum = 1; cardNum <= 20; cardNum++)
+            {
+                LoadCardBack(cardNum);
+            }
         }
 
         // Hides a picture box
@@ -129,12 +134,21 @@ namespace Memory
         // shows a picture box
         private void ShowCard(int i)
         {
+           
+
 
         }
 
         private void ShowAllCards()
         {
+            int cardNum = 1;
 
+            while (cardNum <= 20)
+            {
+                LoadCard(cardNum);
+                cardNum++;
+            }
+    
         }
 
         // disables a picture box
@@ -176,6 +190,10 @@ namespace Memory
              *      to make sure that the cards are loaded successfully and that
              *      they're shuffled.  If you get all 2s, something is wrong.
             */
+            FillCardFilenames();
+            ShuffleCards();
+            LoadAllCardBacks();
+            //ShowAllCards();
         }
 
         private void card_Click(object sender, EventArgs e)

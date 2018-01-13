@@ -85,7 +85,7 @@ namespace TicTacToe
 
         private bool IsColumnWinner(int col)
         {
-                Label square = GetSquare(col, 0);
+                Label square = GetSquare(0, col);
                 string symbol = square.Text;
                 for (int row = 1; row < SIZE; row++)
                 {
@@ -150,6 +150,18 @@ namespace TicTacToe
 
         private bool IsFull()
         {
+
+            for (int row = 0; row < SIZE; row++)
+            {
+                for (int col = 0; col < SIZE; col++)
+                {
+                    Label lab = GetSquare(row, col);
+                    if (lab.Text == "")
+                    {
+                        return false;
+                    }
+                }
+            }
             return true;
         }
 
@@ -240,10 +252,23 @@ namespace TicTacToe
         //* TODO:  finish these 2
         private void HighlightRow(int row)
         {
+            for (int col = 0; col < SIZE; col++)
+            {
+                Label square = GetSquare(row, col);
+                square.Enabled = true;
+                square.ForeColor = Color.Red;
+            }
         }
 
         private void HighlightDiagonal1()
         {
+            for (int row = 0, col = 0; row < SIZE; row++, col++)
+            {
+                Label square = GetSquare(row, col);
+                square.Enabled = true;
+                square.ForeColor = Color.Red;
+
+            }
         }
 
         //* TODO:  finish this
@@ -252,12 +277,15 @@ namespace TicTacToe
             switch (winningDimension)
             {
                 case ROW:
+                    HighlightRow(winningValue);
+                    resultLabel.Text = (player + "wins!");
+                    break;
               
-
-                    break;
                 case COLUMN:
-
+                    HighlightColumn(winningValue);
+                    resultLabel.Text = (player + "wins!");
                     break;
+
                 case DIAGONAL:
                     HighlightDiagonal(winningValue);
                     resultLabel.Text = (player + " wins!");
@@ -289,7 +317,14 @@ namespace TicTacToe
 
             int winningDimension, winningValue;
             if (IsWinner(out winningDimension, out winningValue))
-                MessageBox.Show("Computer wins!");
+            {
+                    string player = "computer ";
+                    HighlightWinner(player, winningDimension, winningValue);
+                    DisableAllSquares();
+
+
+            }
+               
            // else if (IsFull())
              //   MessageBox.Show("It's a Tie!");
         }
@@ -346,7 +381,10 @@ namespace TicTacToe
 
                 if (IsWinner(out winningDimension, out winningValue))
                 {
-                    MessageBox.Show("User Wins!");
+                    string player = "user ";
+                    HighlightWinner(player, winningDimension, winningValue);
+                    DisableAllSquares();
+                    
                 }
 
                 else 

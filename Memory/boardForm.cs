@@ -154,22 +154,30 @@ namespace Memory
         // disables a picture box
         private void DisableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Enabled = false;
         }
 
         private void DisableAllCards()
         {
-
+            for (int cardNum = 1; cardNum <= 20; cardNum++)
+            {
+                DisableCard(cardNum);
+            }
         }
 
         private void EnableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Enabled = true;
         }
 
         private void EnableAllCards()
         {
-
+            for (int cardNum = 1; cardNum <= 20; cardNum++)
+            {
+                EnableCard(cardNum);
+            }
         }
     
         private void EnableAllVisibleCards()
@@ -193,7 +201,7 @@ namespace Memory
             FillCardFilenames();
             ShuffleCards();
             LoadAllCardBacks();
-            //ShowAllCards();
+           // ShowAllCards();
         }
 
         private void card_Click(object sender, EventArgs e)
@@ -213,6 +221,24 @@ namespace Memory
              *      start the flip timer
              *  end if
             */
+
+            if (firstCardNumber == NOT_PICKED_YET)
+            {
+                GetCard(cardNumber);
+                firstCardNumber = cardNumber;
+                LoadCard(cardNumber);
+                DisableCard(cardNumber);
+                
+            }
+
+            else
+            {
+                GetCard(cardNumber);
+                secondCardNumber = cardNumber;
+                LoadCard(cardNumber);
+                DisableAllCards();
+
+            }
         }
 
         private void flipTimer_Tick(object sender, EventArgs e)

@@ -148,6 +148,7 @@ namespace TicTacToe
             }
         }
 
+        //Checks to see if all squares are full
         private bool IsFull()
         {
 
@@ -272,32 +273,44 @@ namespace TicTacToe
         }
 
         //* TODO:  finish this
+        //This highlights the winning row, column, or diagonal
         private void HighlightWinner(string player, int winningDimension, int winningValue)
         {
             switch (winningDimension)
             {
                 case ROW:
                     HighlightRow(winningValue);
-                    resultLabel.Text = (player + "wins!");
+                   
                     break;
               
                 case COLUMN:
                     HighlightColumn(winningValue);
-                    resultLabel.Text = (player + "wins!");
+                    
                     break;
 
                 case DIAGONAL:
                     HighlightDiagonal(winningValue);
-                    resultLabel.Text = (player + " wins!");
+                  
                     break;
             }
         }
 
         //* TODO:  finish these 2
+        //Resets all squares to play again
         private void ResetSquares()
         {
+            for (int r = 0; r < SIZE; r++)
+            {
+                for (int c = 0; c < SIZE; c++)
+                {
+                    Label square = GetSquare(r, c);
+                    square.Text = "";
+                    square.ForeColor = Color.Black;
+                }
+            }
         }
 
+        //Computer makes a move
         private void MakeComputerMove()
         {
             int row;
@@ -318,15 +331,18 @@ namespace TicTacToe
             int winningDimension, winningValue;
             if (IsWinner(out winningDimension, out winningValue))
             {
-                    string player = "computer ";
-                    HighlightWinner(player, winningDimension, winningValue);
-                    DisableAllSquares();
+                string player = "Computer ";
+                HighlightWinner(player, winningDimension, winningValue);
+                resultLabel.Text = (player + "wins!");
+                DisableAllSquares();
 
 
             }
-               
-           // else if (IsFull())
-             //   MessageBox.Show("It's a Tie!");
+
+            else if (IsFull())
+            {
+                MessageBox.Show("It's a Tie!");
+            }
         }
 
         // Setting the enabled property changes the look and feel of the cell.
@@ -381,13 +397,20 @@ namespace TicTacToe
 
                 if (IsWinner(out winningDimension, out winningValue))
                 {
-                    string player = "user ";
+                    string player = "User ";
                     HighlightWinner(player, winningDimension, winningValue);
+                    resultLabel.Text = (player + "wins!");
+
                     DisableAllSquares();
                     
                 }
 
-                else 
+                else if (IsFull())
+                {
+                    MessageBox.Show("It's a Tie!");
+                }
+
+                else  
                 {
                     MakeComputerMove();
                 }
@@ -395,9 +418,13 @@ namespace TicTacToe
             }
         }
 
+        //resets everything to play again
         private void newGameButton_Click(object sender, EventArgs e)
         {
             EnableAllSquares();
+            ResetSquares();
+            resultLabel.Text = "";
+            
         }
 
         private void exitButton_Click(object sender, EventArgs e)

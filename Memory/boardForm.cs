@@ -68,14 +68,22 @@ namespace Memory
         // TODO:  students should write this one
         private bool IsMatch(int index1, int index2)
         {
-            return true;
+            
+            if (GetCardValue(index1) == GetCardValue(index2) && GetCardSuit(index1) == GetCardSuit(index2))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // This method fills each picture box with a filename
         private void FillCardFilenames()
         {
             string[] values = { "a", "2", "j", "q", "k" };
-            string[] suits = { "c", "d", "h", "s" };
+            string[] suits = { "c", "d", "c", "d" };
             int i = 1;
 
             for (int suit = 0; suit <= 3; suit++)
@@ -123,7 +131,8 @@ namespace Memory
         // Hides a picture box
         private void HideCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = false;
         }
 
         private void HideAllCards()
@@ -182,6 +191,15 @@ namespace Memory
     
         private void EnableAllVisibleCards()
         {
+            for (int cardNum = 1; cardNum <= 20; cardNum++)
+            {
+                PictureBox card = GetCard(cardNum);
+                if (card.Visible == true)
+                {
+                    EnableCard(cardNum);
+                }
+
+            }
 
         }
 
@@ -201,7 +219,7 @@ namespace Memory
             FillCardFilenames();
             ShuffleCards();
             LoadAllCardBacks();
-           // ShowAllCards();
+            //ShowAllCards();
         }
 
         private void card_Click(object sender, EventArgs e)
@@ -237,7 +255,8 @@ namespace Memory
                 secondCardNumber = cardNumber;
                 LoadCard(cardNumber);
                 DisableAllCards();
-
+                flipTimer.Interval = 3000;
+                flipTimer.Start();
             }
         }
 
@@ -264,6 +283,32 @@ namespace Memory
              *      enable all of the cards left on the board
              * end if
              */
+            flipTimer.Stop();
+            if(IsMatch(firstCardNumber, secondCardNumber))
+            {
+                matches++;
+                HideCard(firstCardNumber);
+                HideCard(secondCardNumber);
+                firstCardNumber = NOT_PICKED_YET;
+                secondCardNumber = NOT_PICKED_YET;
+                if (matches == 10)
+                {
+                    MessageBox.Show("You've Won!");
+                }
+                else
+                {
+                    EnableAllVisibleCards();          
+                }
+
+            }
+            else
+            {
+                LoadCardBack(firstCardNumber);
+                LoadCardBack(secondCardNumber);
+                firstCardNumber = NOT_PICKED_YET;
+                secondCardNumber = NOT_PICKED_YET;
+                EnableAllVisibleCards();
+            }
         }
         #endregion
     }

@@ -19,6 +19,7 @@ namespace Memory
 
         #region Instance Variables 
         const int NOT_PICKED_YET = -1;
+        const int DECK = 20;
 
         int firstCardNumber = NOT_PICKED_YET;
         int secondCardNumber = NOT_PICKED_YET;
@@ -122,7 +123,7 @@ namespace Memory
         {
             int cardNum;
 
-            for(cardNum = 1; cardNum <= 20; cardNum++)
+            for(cardNum = 1; cardNum <= DECK; cardNum++)
             {
                 LoadCardBack(cardNum);
             }
@@ -137,7 +138,12 @@ namespace Memory
 
         private void HideAllCards()
         {
+            int cardNum;
 
+            for (cardNum = 1; cardNum <= DECK; cardNum++)
+            {
+                HideCard(cardNum);
+            }
         }
 
         // shows a picture box
@@ -152,7 +158,7 @@ namespace Memory
         {
             int cardNum = 1;
 
-            while (cardNum <= 20)
+            while (cardNum <= DECK)
             {
                 LoadCard(cardNum);
                 cardNum++;
@@ -169,7 +175,7 @@ namespace Memory
 
         private void DisableAllCards()
         {
-            for (int cardNum = 1; cardNum <= 20; cardNum++)
+            for (int cardNum = 1; cardNum <= DECK; cardNum++)
             {
                 DisableCard(cardNum);
             }
@@ -183,7 +189,7 @@ namespace Memory
 
         private void EnableAllCards()
         {
-            for (int cardNum = 1; cardNum <= 20; cardNum++)
+            for (int cardNum = 1; cardNum <= DECK; cardNum++)
             {
                 EnableCard(cardNum);
             }
@@ -191,7 +197,7 @@ namespace Memory
     
         private void EnableAllVisibleCards()
         {
-            for (int cardNum = 1; cardNum <= 20; cardNum++)
+            for (int cardNum = 1; cardNum <= DECK; cardNum++)
             {
                 PictureBox card = GetCard(cardNum);
                 if (card.Visible == true)
@@ -294,6 +300,9 @@ namespace Memory
                 if (matches == 10)
                 {
                     MessageBox.Show("You've Won!");
+                    ShuffleCards();
+                    LoadAllCardBacks();
+                    EnableAllCards();
                 }
                 else
                 {

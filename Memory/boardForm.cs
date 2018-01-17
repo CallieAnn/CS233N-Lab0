@@ -100,6 +100,16 @@ namespace Memory
         // TODO:  students should write this one
         private void ShuffleCards()
         {
+            Random generator = new Random();
+            for (int cardNum = 1; cardNum <= DECK; cardNum++)
+            {
+                int randomNum = generator.Next(1, 21);
+                string temp = GetCardFilename(cardNum);
+                string tempRand = GetCardFilename(randomNum);
+                SetCardFilename(cardNum, tempRand);
+                SetCardFilename(randomNum, temp);
+
+            }
         }
 
         // This method loads (shows) an image in a picture box.  Assumes that filenames
@@ -149,8 +159,8 @@ namespace Memory
         // shows a picture box
         private void ShowCard(int i)
         {
-           
-
+            PictureBox card = GetCard(i);
+            card.Visible = true;
 
         }
 
@@ -160,7 +170,7 @@ namespace Memory
 
             while (cardNum <= DECK)
             {
-                LoadCard(cardNum);
+                ShowCard(cardNum);
                 cardNum++;
             }
     
@@ -173,6 +183,7 @@ namespace Memory
             card.Enabled = false;
         }
 
+        //User can't click on any card/picture box
         private void DisableAllCards()
         {
             for (int cardNum = 1; cardNum <= DECK; cardNum++)
@@ -181,12 +192,14 @@ namespace Memory
             }
         }
 
+        //User can click on picture box
         private void EnableCard(int i)
         {
             PictureBox card = GetCard(i);
             card.Enabled = true;
         }
 
+        //User can click on any card/picture box
         private void EnableAllCards()
         {
             for (int cardNum = 1; cardNum <= DECK; cardNum++)
@@ -195,6 +208,7 @@ namespace Memory
             }
         }
     
+        //Enables user to click on any visible card/picture box
         private void EnableAllVisibleCards()
         {
             for (int cardNum = 1; cardNum <= DECK; cardNum++)
@@ -212,6 +226,7 @@ namespace Memory
         #endregion
 
         #region EventHandlers
+        //Happens when the form loads
         private void boardForm_Load(object sender, EventArgs e)
         {
             /* 
@@ -228,6 +243,7 @@ namespace Memory
             //ShowAllCards();
         }
 
+        //When user clicks on a card:
         private void card_Click(object sender, EventArgs e)
         {
             PictureBox card = (PictureBox)sender;
@@ -261,11 +277,12 @@ namespace Memory
                 secondCardNumber = cardNumber;
                 LoadCard(cardNumber);
                 DisableAllCards();
-                flipTimer.Interval = 3000;
+                flipTimer.Interval = 1000;
                 flipTimer.Start();
             }
         }
 
+        //once two cards are clicked, flip timer starts
         private void flipTimer_Tick(object sender, EventArgs e)
         {
             /*
@@ -290,6 +307,7 @@ namespace Memory
              * end if
              */
             flipTimer.Stop();
+            //Checks to see if cards match
             if(IsMatch(firstCardNumber, secondCardNumber))
             {
                 matches++;
@@ -297,11 +315,12 @@ namespace Memory
                 HideCard(secondCardNumber);
                 firstCardNumber = NOT_PICKED_YET;
                 secondCardNumber = NOT_PICKED_YET;
-                if (matches == 10)
+                if (matches == 10) //Winning displays a message box and resets to play again
                 {
                     MessageBox.Show("You've Won!");
                     ShuffleCards();
                     LoadAllCardBacks();
+                    ShowAllCards();
                     EnableAllCards();
                 }
                 else

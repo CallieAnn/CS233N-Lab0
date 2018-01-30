@@ -97,12 +97,10 @@ namespace TicTacToe
         //CHANGE
         private bool IsColumnWinner(int col)
         {
-                Label square = GetSquare(0, col);
-                string symbol = square.Text;
+                string symbol = board[0, col];
                 for (int row = 1; row < SIZE; row++)
                 {
-                    square = GetSquare(row, col);
-                    if (symbol == EMPTY || square.Text != symbol)
+                    if (symbol == EMPTY || board[row, col] != symbol)
                         return false;
                 }
                 return true;
@@ -125,12 +123,10 @@ namespace TicTacToe
         //CHANGE
         private bool IsDiagonal1Winner()
         {
-            Label square = GetSquare(0, 0);
-            string symbol = square.Text;
+            string symbol = board[0, 0];
             for (int row = 1, col = 1; row < SIZE; row++, col++)
             {
-                square = GetSquare(row, col);
-                if (symbol == EMPTY || square.Text != symbol)
+                if (symbol == EMPTY || board[row, col] != symbol)
                     return false;
             }
             return true;
@@ -139,12 +135,10 @@ namespace TicTacToe
         //CHANGE
         private bool IsDiagonal2Winner()
         {
-            Label square = GetSquare(0, (SIZE - 1));
-            string symbol = square.Text;
+            string symbol = board[0, (SIZE - 1)];
             for (int row = 1, col = SIZE - 2; row < SIZE; row++, col--)
             {
-                square = GetSquare(row, col);
-                if (symbol == EMPTY || square.Text != symbol)
+                if (symbol == EMPTY || board[row, col] != symbol)
                     return false;
             }
             return true;
@@ -171,8 +165,7 @@ namespace TicTacToe
             {
                 for (int col = 0; col < SIZE; col++)
                 {
-                    Label lab = GetSquare(row, col);
-                    if (lab.Text == "")
+                    if (board[row, col] == EMPTY)
                     {
                         return false;
                     }

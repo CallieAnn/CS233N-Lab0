@@ -325,17 +325,19 @@ namespace TicTacToe
             int row;
             int column;
             Label lab;
-
+            Random rand = new Random();
             do
             {
-                Random rand = new Random();
+
                 row = rand.Next(5);
                 column = rand.Next(5);
-                lab = GetSquare(row, column);
-            } while (lab.Text != "");
+                //lab = GetSquare(row, column);
 
-            lab.Text = COMPUTER_SYMBOL.ToString();
-            DisableSquare(lab);
+            } while (board[row, column] != "");
+
+            //lab.Text = COMPUTER_SYMBOL.ToString();
+            board[row, column] = COMPUTER_SYMBOL;
+            SyncArrayAndUI();
 
             int winningDimension, winningValue;
             if (IsWinner(out winningDimension, out winningValue))
@@ -389,6 +391,22 @@ namespace TicTacToe
             }
         }
 
+        public void SyncArrayAndUI()
+        {
+            for (int row = 0; row < board.GetLength(0); row++)
+            {
+                for (int col = 0; col < board.GetLength(1); col++)
+                {
+                    GetSquare(row, col).Text = board[row, col];
+                    GetSquare(row, col).ForeColor = Color.Black;
+                    if (GetSquare(row, col).Text != EMPTY)
+                    {
+                        DisableSquare(GetSquare(row, col));
+                    }
+                }
+            }
+        }
+
         //* TODO:  finish the event handlers
         private void label_Click(object sender, EventArgs e)
         {
@@ -401,8 +419,10 @@ namespace TicTacToe
                 int row, column;
                 GetRowAndColumn(clickedLabel, out row, out column);
 
-                clickedLabel.Text = USER_SYMBOL.ToString();
-                DisableSquare(clickedLabel);
+                //clickedLabel.Text = USER_SYMBOL.ToString();//change
+                //DisableSquare(clickedLabel);//change
+                board[row, column] = USER_SYMBOL;
+                SyncArrayAndUI();
 
                 if (IsWinner(out winningDimension, out winningValue))
                 {
@@ -422,6 +442,7 @@ namespace TicTacToe
                 else  
                 {
                     MakeComputerMove();
+                   // SyncArrayAndUI();
                 }
                 
             }
@@ -431,7 +452,8 @@ namespace TicTacToe
         private void newGameButton_Click(object sender, EventArgs e)
         {
             EnableAllSquares();
-            ResetSquares();
+            FillBoard();
+            SyncArrayAndUI();
             resultLabel.Text = "";
             
         }
@@ -439,6 +461,12 @@ namespace TicTacToe
         private void exitButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void TTTForm_Load(object sender, EventArgs e)
+        {
+            FillBoard();
+            SyncArrayAndUI();
         }
     }
 }
